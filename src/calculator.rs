@@ -65,10 +65,25 @@ impl Calculator {
                     if !self.evaluated {
                         self.held_value = last_value;
                     }
-                    println!("Got value {}, held value {}", self.value, self.held_value);
                 },
-                Operator::Multiplication => todo!(),
-                Operator::Division => todo!(),
+                Operator::Multiplication => {
+                    let last_value = self.value;
+                    self.value = self.value * self.held_value;
+                    if !self.evaluated {
+                        self.held_value = last_value;
+                    }
+                },
+                Operator::Division => {
+                    let last_value = self.value;
+                    self.value = if !self.evaluated {
+                        self.held_value / self.value
+                    } else {
+                        self.value / self.held_value
+                    };
+                    if !self.evaluated {
+                        self.held_value = last_value;
+                    }
+                },
             }
             self.evaluated = true;
         }
@@ -130,5 +145,36 @@ mod tests {
         assert_eq!(calc.get_value(), "-5");
         calc.evaluate();
         assert_eq!(calc.get_value(), "-11");
+    }
+
+    #[test]
+    fn multiplication() {
+        let mut calc = Calculator::new();
+        calc.put_digit(Digit::D8);
+        calc.put_operator(Operator::Multiplication);
+        calc.put_digit(Digit::D2);
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "16");
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "32");
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "64");
+    }
+
+    #[test]
+    fn division() {
+        let mut calc = Calculator::new();
+        calc.put_digit(Digit::D1);
+        calc.put_digit(Digit::D2);
+        calc.put_digit(Digit::D0);
+        calc.put_operator(Operator::Division);
+        calc.put_digit(Digit::D2);
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "60");
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "30");
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "15");
+        
     }
 }
