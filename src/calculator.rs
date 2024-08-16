@@ -1,9 +1,8 @@
-use std::u8;
-
 struct Calculator {
     value: i64,
     held_value: i64,
     last_op: Option<Operator>,
+    evaluated: bool,
 }
 
 enum Digit {
@@ -29,7 +28,7 @@ enum Operator {
 
 impl Calculator {
     fn new() -> Self {
-        Self { value: 0, held_value: 0, last_op: None }
+        Self { value: 0, held_value: 0, last_op: None, evaluated: false }
     }
 
     fn get_value(&self) -> String {
@@ -52,12 +51,26 @@ impl Calculator {
                 Operator::Addition => {
                     let last_value = self.value;
                     self.value = self.value + self.held_value;
-                    self.held_value = last_value;
+                    if !self.evaluated {
+                        self.held_value = last_value;
+                    }
                 },
-                Operator::Subtraction => todo!(),
+                Operator::Subtraction => {
+                    let last_value = self.value;
+                    self.value = if !self.evaluated {
+                        self.held_value - self.value
+                    } else {
+                        self.value - self.held_value
+                    };
+                    if !self.evaluated {
+                        self.held_value = last_value;
+                    }
+                    println!("Got value {}, held value {}", self.value, self.held_value);
+                },
                 Operator::Multiplication => todo!(),
                 Operator::Division => todo!(),
             }
+            self.evaluated = true;
         }
     }
 }
@@ -101,5 +114,21 @@ mod tests {
         assert_eq!(calc.get_value(), "5");
         calc.evaluate();
         assert_eq!(calc.get_value(), "9");
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "13");
+    }
+
+    #[test]
+    fn subtraction() {
+        let mut calc = Calculator::new();
+        calc.put_digit(Digit::D7);
+        calc.put_operator(Operator::Subtraction);
+        calc.put_digit(Digit::D6);
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "1");
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "-5");
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "-11");
     }
 }
