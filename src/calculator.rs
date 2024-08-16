@@ -18,7 +18,7 @@ enum Digit {
     D9 = 9,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 enum Operator {
     Addition,
     Subtraction,
@@ -87,6 +87,17 @@ impl Calculator {
             }
             self.evaluated = true;
         }
+    }
+
+    fn clear_all(&mut self) {
+        self.value = 0;
+        self.held_value = 0;
+        self.evaluated = false;
+        self.last_op = None;
+    }
+
+    fn clear_entry(&mut self) {
+        self.value = 0;
     }
 }
 
@@ -185,5 +196,32 @@ mod tests {
         calc.put_digit(Digit::D2);
         calc.evaluate();
         assert_eq!(calc.get_value(), "3");
+    }
+
+    #[test]
+    fn clear_all() {
+        let mut calc = Calculator::new();
+        calc.put_digit(Digit::D1);
+        calc.put_operator(Operator::Addition);
+        calc.put_digit(Digit::D2);
+        calc.clear_all();
+        assert_eq!(calc.get_value(), "0");
+        assert_eq!(calc.held_value, 0);
+        assert_eq!(calc.evaluated, false);
+        assert_eq!(calc.last_op, None);
+    }
+
+    #[test]
+    fn clear_entry() {
+        let mut calc = Calculator::new();
+        calc.put_digit(Digit::D4);
+        calc.put_operator(Operator::Multiplication);
+        calc.put_digit(Digit::D1);
+        calc.put_digit(Digit::D3);
+        calc.clear_entry();
+        calc.put_digit(Digit::D1);
+        calc.put_digit(Digit::D2);
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "48");
     }
 }
