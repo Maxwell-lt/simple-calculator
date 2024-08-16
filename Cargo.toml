@@ -1,0 +1,9 @@
+[package]
+name = "simple-calculator"
+version = "0.1.0"
+authors = ["Maxwell L-T"]
+edition = "2021"
+description = "Simple GUI calculator"
+
+[dependencies]
+iced = "0.12"
