@@ -175,6 +175,15 @@ mod tests {
         assert_eq!(calc.get_value(), "30");
         calc.evaluate();
         assert_eq!(calc.get_value(), "15");
-        
+    }
+
+    #[test]
+    fn integer_division() {
+        let mut calc = Calculator::new();
+        calc.put_digit(Digit::D7);
+        calc.put_operator(Operator::Division);
+        calc.put_digit(Digit::D2);
+        calc.evaluate();
+        assert_eq!(calc.get_value(), "3");
     }
 }
