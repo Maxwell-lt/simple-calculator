@@ -1,11 +1,11 @@
-struct Calculator {
+pub struct Calculator {
     value: i64,
     held_value: i64,
     last_op: Option<Operator>,
     evaluated: bool,
 }
 
-enum Digit {
+pub enum Digit {
     D0 = 0,
     D1 = 1,
     D2 = 2,
@@ -19,7 +19,7 @@ enum Digit {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-enum Operator {
+pub enum Operator {
     Addition,
     Subtraction,
     Multiplication,
@@ -27,25 +27,25 @@ enum Operator {
 }
 
 impl Calculator {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self { value: 0, held_value: 0, last_op: None, evaluated: false }
     }
 
-    fn get_value(&self) -> String {
+    pub fn get_value(&self) -> String {
         return self.value.to_string()
     }
 
-    fn put_digit(&mut self, digit: Digit) {
+    pub fn put_digit(&mut self, digit: Digit) {
         self.value = (self.value * 10) + digit as i64;
     }
 
-    fn put_operator(&mut self, op: Operator) {
+    pub fn put_operator(&mut self, op: Operator) {
         self.held_value = self.value;
         self.value = 0;
         self.last_op = Some(op);
     }
 
-    fn evaluate(&mut self) {
+    pub fn evaluate(&mut self) {
         if let Some(op) = self.last_op {
             match op {
                 Operator::Addition => {
@@ -89,14 +89,14 @@ impl Calculator {
         }
     }
 
-    fn clear_all(&mut self) {
+    pub fn clear_all(&mut self) {
         self.value = 0;
         self.held_value = 0;
         self.evaluated = false;
         self.last_op = None;
     }
 
-    fn clear_entry(&mut self) {
+    pub fn clear_entry(&mut self) {
         self.value = 0;
     }
 }
