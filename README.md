@@ -6,7 +6,6 @@ Calculator application supporting basic arithmetic operations, built with Rust a
 
 * Standard calculator layout including at least these buttons:
     * Digits 0-9
-    * Decimal separator
     * Add, Subtract, Multiply, Divide
     * Equals
     * Clear Entry, All Clear

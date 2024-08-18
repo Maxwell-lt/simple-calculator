@@ -1,7 +1,9 @@
 use calculator::Calculator;
 use calculator::Digit;
 use calculator::Operator;
-use iced::widget::{button, column, row, text};
+use iced::widget::Column;
+use iced::widget::Row;
+use iced::widget::{button, text};
 use iced::{Alignment, Element, Sandbox, Settings};
 
 mod calculator;
@@ -71,47 +73,47 @@ impl Sandbox for CalcApp {
     }
 
     fn view(&self) -> Element<'_, Self::Message> {
-        column![
-            text(self.calculator.get_value()).size(50),
-            row![
-                button("AC")
-                    .padding(30)
-                    .on_press(CalcMessage::AllClearPressed),
-                button("CE")
-                    .padding(30)
-                    .on_press(CalcMessage::ClearEntryPressed),
-                button("=").padding(30).on_press(CalcMessage::EqualsPressed)
-            ],
-            row![
-                button("7").padding(30).on_press(CalcMessage::SevenPressed),
-                button("8").padding(30).on_press(CalcMessage::EightPressed),
-                button("9").padding(30).on_press(CalcMessage::NinePressed),
-                button("+").padding(30).on_press(CalcMessage::AddPressed),
-            ],
-            row![
-                button("4").padding(30).on_press(CalcMessage::FourPressed),
-                button("5").padding(30).on_press(CalcMessage::FivePressed),
-                button("6").padding(30).on_press(CalcMessage::SixPressed),
-                button("-")
-                    .padding(30)
-                    .on_press(CalcMessage::SubtractPressed),
-            ],
-            row![
-                button("1").padding(30).on_press(CalcMessage::OnePressed),
-                button("2").padding(30).on_press(CalcMessage::TwoPressed),
-                button("3").padding(30).on_press(CalcMessage::ThreePressed),
-                button("*")
-                    .padding(30)
-                    .on_press(CalcMessage::MultiplyPressed),
-            ],
-            row![
-                button("0").padding(30).on_press(CalcMessage::ZeroPressed),
-                button("/").padding(30).on_press(CalcMessage::DividePressed),
-            ]
+        Column::new()
+            .spacing(5)
             .align_items(Alignment::End)
-        ]
-        .padding(20)
-        .align_items(Alignment::Center)
+            .push(text(self.calculator.get_value()).size(50).horizontal_alignment(iced::alignment::Horizontal::Right))
+            .push(Row::new()
+                .spacing(5)
+                .align_items(Alignment::Start)
+                .push(button("AC").height(60).width(60).on_press(CalcMessage::AllClearPressed))
+                .push(button("CE").height(60).width(60).on_press(CalcMessage::ClearEntryPressed))
+                .push(button("+").height(60).width(60).on_press(CalcMessage::AddPressed))
+            )
+            .push(Row::new()
+                .spacing(5)
+                .align_items(Alignment::Start)
+                .push(button("7").height(60).width(60).on_press(CalcMessage::SevenPressed))
+                .push(button("8").height(60).width(60).on_press(CalcMessage::EightPressed))
+                .push(button("9").height(60).width(60).on_press(CalcMessage::NinePressed))
+                .push(button("-").height(60).width(60).on_press(CalcMessage::SubtractPressed))
+            )
+            .push(Row::new()
+                .spacing(5)
+                .align_items(Alignment::Start)
+                .push(button("4").height(60).width(60).on_press(CalcMessage::FourPressed))
+                .push(button("5").height(60).width(60).on_press(CalcMessage::FivePressed))
+                .push(button("6").height(60).width(60).on_press(CalcMessage::SixPressed))
+                .push(button("*").height(60).width(60).on_press(CalcMessage::MultiplyPressed))
+            )
+            .push(Row::new()
+                .spacing(5)
+                .align_items(Alignment::Start)
+                .push(button("1").height(60).width(60).on_press(CalcMessage::OnePressed))
+                .push(button("2").height(60).width(60).on_press(CalcMessage::TwoPressed))
+                .push(button("3").height(60).width(60).on_press(CalcMessage::ThreePressed))
+                .push(button("/").height(60).width(60).on_press(CalcMessage::DividePressed))
+            )
+            .push(Row::new()
+                .spacing(5)
+                .align_items(Alignment::Start)
+                .push(button("0").height(60).width(60).on_press(CalcMessage::ZeroPressed))
+                .push(button("=").height(60).width(125).on_press(CalcMessage::EqualsPressed))
+            )
         .into()
     }
 }
